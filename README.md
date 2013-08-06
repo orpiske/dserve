@@ -1,7 +1,7 @@
 Download Server
 ============
 
-This is toy project and should not be taken seriously.
+This is a toy project and should not be taken seriously.
 
 References
 ----
