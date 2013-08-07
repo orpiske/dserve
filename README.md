@@ -62,7 +62,7 @@ Default Options
 
 You can set the default options in each of the respective user files. 
 
-Server file: `~/.dsserver/dsserver.conf
+Server file: `~/.dsserver/dsserver.conf`
 
 ```
 server.listen.port=62434
