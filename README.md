@@ -57,6 +57,42 @@ Usage: 	-p	--port=<port> port used to connect to
 	-h	--help show this help
 ```
 
+Default Options
+----
+
+You can set the default options in each of the respective user files. 
+
+Server file: `~/.dsserver/dsserver.conf
+
+```
+server.listen.port=62434
+server.listen.ip=0.0.0.0
+server.connection.timeout=0
+server.directory.log=/Users/otavio/.dsserver/logs/
+server.directory.dest=/Users/otavio/Downloads
+server.downloads.max=20
+server.mode.quiet=0
+server.mode.debug=1
+```
+
+Client file: `~/.dsclient/dsclient.conf`
+
+```
+client.server.port=62434
+client.server.ip=127.0.0.1
+client.connection.timeout=10
+client.connection.keepalive=0
+```
+
+Compiling and Installing
+----
+
+It's pretty straightforward: you need [CMake](http://www.cmake.org/) and [Libcurl](http://curl.haxx.se/libcurl/). That's all.
+
+```
+ccmake . && make && make install
+```
+
 References
 ----
 
