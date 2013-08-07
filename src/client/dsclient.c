@@ -138,6 +138,20 @@ static options_t *get_configuration_object() {
 	return options_new(filename, CLIENT_OPTIONS);
 }
 
+static void show_help() {
+	printf("Usage: ");
+	printf("\t-p\t--port=<port> port used to connect to\n");
+	printf("\t-h\t--host=<ip/hostname> hostname/ip connect to\n");
+	printf("\t-u\t--url=<url> download url\n");
+	printf("\t-s\t--status download status\n");
+	printf("\t-c\t--cancel download\n");
+	printf("\t-p\t--pause download\n");
+	printf("\t-r\t--restart download\n");
+	printf("\t-k\t--keepalive don't disconnect from the server\n");
+	printf("\t-i\t--init save options\n");
+	printf("\t-h\t--help show this help\n");
+}
+
 int main(int argc, char **argv) {
 	int c;
 	int digit_opt = 0;
@@ -163,10 +177,11 @@ int main(int argc, char **argv) {
 				{ "restart", false, 0, 'r' },
 				{ "keepalive", false, 0, 'k' },
 				{ "init", false, 0, 'i' },
+				{ "help", false, 0, 'h' },
 				{ 0, 0, 0, 0 }
 		};
 
-		c = getopt_long(argc, argv, "p:H:n:u:scPrki", long_options, &option_index);
+		c = getopt_long(argc, argv, "p:H:n:u:scPrkih", long_options, &option_index);
 		if (c == -1) {
 			if (optind == 1) {
 				fprintf(stderr, "Not enough options\n");
@@ -218,8 +233,13 @@ int main(int argc, char **argv) {
 				options_save(options);
 				return EXIT_SUCCESS;
 			}
+			case 'h': {
+				show_help();
+				return EXIT_SUCCESS;
+			}
 			default: {
-				printf("Error\n");
+				printf("Invalid or missing option\n");
+				show_help();
 				break;
 			}
 		}

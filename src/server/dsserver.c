@@ -100,7 +100,15 @@ static bool create_directories(const options_t *opt) {
 	return true;
 }
 
-
+static void show_help() {
+	printf("Usage: ");
+	printf("\t-p\t--port=<port> port used to listen to\n");
+	printf("\t-h\t--host=<ip/hostname> hostname/ip listen to to\n");
+	printf("\t-q\t--quiet runs quietly\n");
+	printf("\t-d\t--debug runs in debug mode\n");
+	printf("\t-i\t--init save options\n");
+	printf("\t-h\t--help show this help\n");
+}
 
 int main(int argc, char **argv) {
 	int c;
@@ -133,6 +141,7 @@ int main(int argc, char **argv) {
 				{ "quiet", false, 0, 'q' },
 				{ "debug", false, 0, 'd' },
 				{ "init", false, 0, 'i' },
+				{ "help", false, 0, 'h' },
 				{ 0, 0, 0, 0 }
 		};
 
@@ -163,8 +172,13 @@ int main(int argc, char **argv) {
 				options_save(options);
 				return EXIT_SUCCESS;
 			}
+			case 'h': {
+				show_help();
+				return EXIT_SUCCESS;
+			}
 			default: {
-				printf("Error\n");
+				printf("Invalid or missing option\n");
+				show_help();
 				break;
 			}
 		}
