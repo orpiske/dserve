@@ -66,8 +66,10 @@ static void get_file_name(const entry_t *entry, int size, char *dest) {
 	const options_t *options = get_options_object();
 
 	bzero(dest, size);
+    
+    printf("File = %s\n", entry->id.name);
 	snprintf(dest, size, "%s%s%s", options->destdir, FILE_SEPARATOR,
-			entry->id.name);
+			get_name_from_url(entry->url, strlen(entry->url)));
 }
 
 static FILE *open_file(entry_t *entry, CURL *easy) {
@@ -80,7 +82,8 @@ static FILE *open_file(entry_t *entry, CURL *easy) {
 	ret = fopen(dest_file, "a");
 
 	if (!ret) {
-		msg(ERROR, "Unable to open file: %s\n", strerror(errno));
+		msg(ERROR, "Unable to open destination file %s: %s\n", dest_file,
+            strerror(errno));
 
 		return false;
 	}

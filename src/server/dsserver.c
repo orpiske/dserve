@@ -106,7 +106,6 @@ int main(int argc, char **argv) {
 	int c;
 	int digit_opt = 0;
 	int option_index = 0;
-	 // options_t options;
 
 	options_t *options = get_configuration_object();
 	if (!options) {

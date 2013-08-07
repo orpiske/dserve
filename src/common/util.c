@@ -400,3 +400,20 @@ bool recursive_mkdir(const char *path) {
 	free(tmp);
 	return true;
 }
+
+
+/**
+ * Given an URL, this function will return the file name for the download
+ * @param url The url
+ * @return the file name
+ */
+const char *get_name_from_url(const char *url, int size) {
+    int i = 0;
+    
+    for (i = size; i > 0; i--) {
+        if (url[i] == '/') {
+            return (char *) &url[i + 1];
+        }
+    }
+
+}

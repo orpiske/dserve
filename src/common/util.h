@@ -50,5 +50,6 @@ int create_queue(const char *type, key_t key);
 bool send_message_local(int queue, const transaction_t *transaction);
 bool read_message_local(int queue, transaction_t *transaction, int type, int opt);
 bool recursive_mkdir(const char *path);
+const char *get_name_from_url(const char *url, int size);
 
 #endif

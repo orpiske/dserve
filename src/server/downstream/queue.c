@@ -236,6 +236,23 @@ void queue_status(const transaction_t *request, transaction_t *response,
 	set_transaction(response, request->command, SUCCESS, request->id.name,"");
 }
 
+/*
+ typedef struct trx_id_t_ {
+ char name[MAX_NAME_LEN];
+ } trx_id_t;
+ 
+ typedef struct entry_t_ {
+ trx_id_t id;
+ entry_status_t status;
+ char url[MAX_URL_LEN];
+ double size;
+ double remaining;
+ double complete;
+ double speed;
+ entry_time_t time;
+ } entry_t;
+ */
+
 static void queue_data_save(const void *data, void *ptr) {
 	entry_t *entry = (entry_t *) data;
 	FILE *file = (FILE *) ptr;
@@ -244,15 +261,15 @@ static void queue_data_save(const void *data, void *ptr) {
 		download_pause(&entry->id);
 		entry->status = WAITING;
 	}
-	size_t nelem = fwrite(entry, sizeof(entry_t), 1, file);
-
-	if (nelem != 1) {
-		messenger msg = get_messenger();
-
-		msg(ERROR, "Unable to save data for %s: %s", entry->id.name, strerror(errno));
-
-		return;
-	}
+    
+    fprintf(file, "%s %i %s %lf %lf %lf %lf %li %li\n",
+            get_name_from_url(entry->url, strlen(entry->url)),
+            entry->status, entry->url, entry->size, entry->remaining,
+            entry->complete, entry->speed, entry->time.start,
+            entry->time.measured);
+    
+    messenger msg = get_messenger();
+	fflush(file);
 }
 
 
@@ -304,7 +321,8 @@ bool queue_load(void) {
 
 	idx_file = fopen(filename, "r");
 	if (!idx_file) {
-		msg(ERROR, "Unable to open file: %s", strerror(errno));
+		msg(ERROR, "Unable to open download index file %s: %s", filename,
+            strerror(errno));
 
 		return false;
 	}
@@ -319,7 +337,14 @@ bool queue_load(void) {
 			return false;
 		}
 
-		size_t nelem = fread(entry, sizeof(entry_t), 1, idx_file);
+        bzero(entry->id.name, sizeof(entry->id.name));
+        
+        fscanf(idx_file, "%255s %i %s %lf %lf %lf %lf %li %li\n", entry->id.name,
+                (int *)&entry->status, entry->url, &entry->size, &entry->remaining,
+                &entry->complete, &entry->speed, &entry->time.start,
+                &entry->time.measured);
+        
+		size_t nelem =  1; // fread(entry, sizeof(entry_t), 1, idx_file);
 
 		if (nelem != 1) {
 			entry = delete_entry(&entry);
