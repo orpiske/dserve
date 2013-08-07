@@ -112,7 +112,7 @@ static void options_read_for_server(options_t *dest, FILE *source) {
 }
 
 static void options_write_for_server(const options_t *source, FILE *dest) {
-	fprintf(dest, "server.listen.port=%hi\n", source->port);
+	fprintf(dest, "server.listen.port=%hu\n", source->port);
 	fprintf(dest, "server.listen.ip=%s\n", source->host);
 	fprintf(dest, "server.connection.timeout=%hi\n", source->timeout);
 	fprintf(dest, "server.directory.log=%s\n", source->logdir);
@@ -132,7 +132,7 @@ static void options_read_for_client(options_t *dest, FILE *source) {
 
 static void options_write_for_client(const options_t *source, FILE *dest) {
 
-	fprintf(dest, "client.server.port=%hi\n", source->port);
+	fprintf(dest, "client.server.port=%hu\n", source->port);
 	fprintf(dest, "client.server.ip=%s\n", source->host);
 	fprintf(dest, "client.connection.timeout=%hi\n", source->timeout);
 	fprintf(dest, "client.connection.keepalive=%hi\n", source->keep_alive);
